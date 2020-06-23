@@ -2,7 +2,7 @@
 """
 Created on Wed Sep 26 11:31:12 2018
 
-@author: Dragon
+@author: Xianglong Zeng
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,7 +33,7 @@ def normalize(data, lower, upper):
     mx = np.max(data)
     mn = np.min(data)
     if mx==mn:
-#        print('大小', data.shape)
+#        print('Size:', data.shape)
 #        plt.imshow(data[5], cmap='gray')
         norm_data = np.zeros(data.shape)
     else:  
