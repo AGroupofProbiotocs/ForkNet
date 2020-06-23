@@ -2,7 +2,7 @@
 """
 Created on Thu Mar 22 16:33:21 2018
 
-@author: Dell
+@author: Xianglong Zeng
 """
 import matplotlib.pyplot as plt 
 import numpy as np
@@ -23,12 +23,12 @@ Y_filename = '../data/training_set/Y.h5'
 labels_filename = '../data/training_set/Labels.h5'
 data_path = '/home/data_set/Polarized_Images/training_set/'
 
-# the clip points on x axis
+# the clip coordinates on x axis
 x_steps = np.arange(0, IMG_WIDTH-PATCH_SIZE, CLIP_STRIDES)
 if (IMG_WIDTH-PATCH_SIZE)/CLIP_STRIDES != 0: 
     x_steps = np.append(x_steps, IMG_WIDTH-PATCH_SIZE)
 x_num = len(x_steps)
-# the clip points on y axis   
+# the clip coordinates on y axis   
 y_steps = np.arange(0, IMG_HEIGHT-PATCH_SIZE, CLIP_STRIDES) 
 if (IMG_HEIGHT-PATCH_SIZE)/CLIP_STRIDES != 0:
     y_steps = np.append(y_steps, IMG_HEIGHT-PATCH_SIZE)
