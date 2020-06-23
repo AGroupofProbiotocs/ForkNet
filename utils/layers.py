@@ -2,7 +2,7 @@
 """
 Created on Thu Sep 20 20:44:54 2018
 
-@author: Dragon
+@author: Xianglong Zeng
 """
 
 import tensorflow as tf
