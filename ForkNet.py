@@ -1,7 +1,7 @@
 """
 ========================================================================
 ForkNet for DoFP sensor to reconstruct s0, dolp and aop, Version 1.0
-Copyright(c) 2020  Xianglong Zeng, Yuan Luo, Wenbin Ye
+Copyright(c) 2020 Xianglong Zeng, Yuan Luo, Xiaojing Zhao, Wenbin Ye
 All Rights Reserved.
 ----------------------------------------------------------------------
 Permission to use, copy, or modify this software and its documentation
