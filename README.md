@@ -2,7 +2,7 @@
 An end-to-end network for the super-resolution of DoFP polarization imaging in Tensorflow.
 
 ## Network Architecture
-![](https://github.com/AGroupofProbiotocs/ForkNet/edit/master/README.md)  
+![ForkNet](https://github.com/AGroupofProbiotocs/ForkNet/blob/master/ForkNet.jpg)  
 
 ## Citation
 Please cite the following paper if you use the code:
