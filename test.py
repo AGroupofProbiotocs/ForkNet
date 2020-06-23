@@ -1,15 +1,33 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct  5 23:01:08 2018
+========================================================================
+ForkNet for DoFP sensor to reconstruct s0, dolp and aop, Version 1.0
+Copyright(c) 2020 Xianglong Zeng, Yuan Luo, Xiaojing Zhao, Wenbin Ye
+All Rights Reserved.
+----------------------------------------------------------------------
+Permission to use, copy, or modify this software and its documentation
+for educational and research purposes only and without fee is here
+granted, provided that this copyright notice and the original authors'
+names appear on all copies and supporting documentation. This program
+shall not be used, rewritten, or adapted as the basis of a commercial
+software or hardware product without first obtaining permission of the
+authors. The authors make no representations about the suitability of
+this software for any purpose. It is provided "as is" without express
+or implied warranty.
+----------------------------------------------------------------------
+Please cite the following paper when you use it:
 
-@author: Dell
+Xianglong Zeng, Yuan Luo, Xiaojing Zhao, and Wenbin Ye, "An end-to-end 
+fully-convolutional neural network for division of focal plane sensors 
+to reconstruct S0, DoLP, and AoP," Opt. Express 27, 8566-8577 (2019)
+========================================================================
 """
 import tensorflow as tf
 import numpy as np
 import cv2
 from PIL import Image
 import matplotlib.pyplot as plt
-from ForkNet import srcnn_ete, LOSS
+from model import ForkNet, LOSS
 from utils.utils import dolp, psnr, normalize, view_bar, aop, pad_shift, count_para, plot_feature_map, fig2array
 import imageio as imgio
 import os
@@ -65,7 +83,7 @@ AoP = tf.placeholder(tf.float32, [None, None, None, 1], name='AoP')
 #    Para = tf.placeholder(tf.float32, [None, None, None, 3])#define tensors of input and label
 
 # DoLP_hat= srcnn_ete(Y)
-S0_hat, DoLP_hat, AoP_hat = srcnn_ete(Y, padding='SAME')
+S0_hat, DoLP_hat, AoP_hat = ForkNet(Y, padding='SAME')
 
 with tf.Session() as sess:
     saver = tf.train.Saver(var_list=tf.global_variables())
