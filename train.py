@@ -1,15 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Sep 22 11:48:41 2018
+========================================================================
+ForkNet for DoFP sensor to reconstruct s0, dolp and aop, Version 1.0
+Copyright(c) 2020 Xianglong Zeng, Yuan Luo, Xiaojing Zhao, Wenbin Ye
+All Rights Reserved.
+----------------------------------------------------------------------
+Permission to use, copy, or modify this software and its documentation
+for educational and research purposes only and without fee is here
+granted, provided that this copyright notice and the original authors'
+names appear on all copies and supporting documentation. This program
+shall not be used, rewritten, or adapted as the basis of a commercial
+software or hardware product without first obtaining permission of the
+authors. The authors make no representations about the suitability of
+this software for any purpose. It is provided "as is" without express
+or implied warranty.
+----------------------------------------------------------------------
+Please cite the following paper when you use it:
 
-@author: Dragon
+Xianglong Zeng, Yuan Luo, Xiaojing Zhao, and Wenbin Ye, "An end-to-end 
+fully-convolutional neural network for division of focal plane sensors 
+to reconstruct S0, DoLP, and AoP," Opt. Express 27, 8566-8577 (2019)
+========================================================================
 """
 
 import tensorflow as tf
 import numpy as np
 import h5py
-from ForkNet import srcnn_ete, MSE_LOSS, LOSS, smooth_loss
-# from SRCNN_ETE_flect_pad import srcnn_ete, LOSS, PSNR
+from model import ForkNet, MSE_LOSS, LOSS, smooth_loss
 from utils.batch_generator import patch_batch_generator
 from utils.utils import dolp, psnr, normalize, aop, gs_rand_choice
 import matplotlib.pyplot as plt 
@@ -49,7 +66,7 @@ def load_data(batch_size = BATCH_SIZE, train_img_index_path = train_img_index_pa
     Divide the training set and validation set.
     Return two generator to generate batches of data.
     '''
-    # 从h5文件中读取双三次插值后的图片Y和标签（重建结果，Stokes参数以及梯度）
+    # read data from h5 file
     with h5py.File(Y_path, 'r') as h1:
         Y = np.array(h1.get('inputs'))
 
@@ -88,12 +105,12 @@ def load_data(batch_size = BATCH_SIZE, train_img_index_path = train_img_index_pa
     #     [np.random.choice(np.arange(i * patch_num_per_img, (i + 1) * patch_num_per_img), 192) for i in val_img_index])
 
     patch_num_train = len(patch_index_train)
-    # 一个epoch内的训练次数
+    # training steps in one epoch
     train_steps = int(np.ceil(patch_num_train * 1. / batch_size))
     print('# Training Patches: {}.'.format(patch_num_train))
 
     patch_num_val = len(patch_index_val)
-    # 一个epoch内的测试次数
+    # validation steps in one epoch
     val_steps = int(np.ceil(patch_num_val * 1. / batch_size))
     print('# Validation Patches: {}.'.format(patch_num_val))
 
@@ -133,7 +150,7 @@ def train(patch_width = PATCH_WIDTH, patch_height = PATCH_HEIGHT, epoch_num = EP
     train_step = tf.train.AdamOptimizer(decayed_learning_rate).minimize(loss, global_step = global_step)
     
     init = tf.global_variables_initializer()
-    saver = tf.train.Saver()  #实例化保存器
+    saver = tf.train.Saver()  #instantiate the saveer
     
     train_steps, train_Y, train_label, val_steps, val_Y, val_label = load_data()
     # val_s0 = val_para[:, :, :, :1]
@@ -152,10 +169,10 @@ def train(patch_width = PATCH_WIDTH, patch_height = PATCH_HEIGHT, epoch_num = EP
         total_AoP_PSNR_BIC = 0
 
         for epoch in range(epoch_num):          
-            #训练集batch生成器    
+            #training set batch generator   
             train_generator = patch_batch_generator(train_Y, train_label, batch_size, patch_width, patch_height, random_shuffle = True)
 
-            # 测试集batch生成器
+             #test set batch generator   
             val_generator = patch_batch_generator(val_Y, val_label, batch_size, patch_width, patch_height, random_shuffle=False, augment=False)
             
             print('=======================================Epoch:{}/{}======================================='.format(epoch, epoch_num))
@@ -199,7 +216,7 @@ def train(patch_width = PATCH_WIDTH, patch_height = PATCH_HEIGHT, epoch_num = EP
 
                 total_val_loss += sess.run(loss, feed_dict={Y: Y_batch_val, S0:S0_batch_val, DoLP:DoLP_batch_val, AoP:AoP_batch_val})
                 S0_hat_val, DoLP_hat_val, AoP_hat_val = sess.run([S0_hat, DoLP_hat, AoP_hat], feed_dict={Y:Y_batch_val})
-                #限制范围
+                #limit the value
                 S0_hat_val = np.clip(S0_hat_val, 0, 2)
                 DoLP_hat_val = np.clip(DoLP_hat_val, 0, 1)
                 # AoP_hat_val = np.clip(AoP_hat_val, 0, math.pi)
