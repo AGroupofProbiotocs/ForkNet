@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 from PIL import Image
 import matplotlib.pyplot as plt
-from ForkNet import srcnn_ete, LOSS
+from model import ForkNet, LOSS
 from utils.utils import dolp, psnr, view_bar, aop, pad_shift, count_para, plot_feature_map, fig2array, interpolate_bic
 import imageio as imgio
 import os
@@ -31,8 +31,8 @@ DoLP = tf.placeholder(tf.float32, [None, None, None, 1], name='DoLP')
 AoP = tf.placeholder(tf.float32, [None, None, None, 1], name='AoP')
 #    Para = tf.placeholder(tf.float32, [None, None, None, 3])#define tensors of input and label
 
-# DoLP_hat= srcnn_ete(Y)
-S0_hat, DoLP_hat, AoP_hat = srcnn_ete(Y, padding='SAME')
+# DoLP_hat= ForkNet(Y)
+S0_hat, DoLP_hat, AoP_hat = ForkNet(Y, padding='SAME')
 
 with tf.Session() as sess:
     saver = tf.train.Saver(var_list=tf.global_variables())
