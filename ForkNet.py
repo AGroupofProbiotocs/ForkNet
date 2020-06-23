@@ -1,18 +1,41 @@
+"""
+========================================================================
+ForkNet for DoFP sensor to reconstruct s0, dolp and aop, Version 1.0
+Copyright(c) 2020  Xianglong Zeng, Yuan Luo, Wenbin Ye
+All Rights Reserved.
+----------------------------------------------------------------------
+Permission to use, copy, or modify this software and its documentation
+for educational and research purposes only and without fee is here
+granted, provided that this copyright notice and the original authors'
+names appear on all copies and supporting documentation. This program
+shall not be used, rewritten, or adapted as the basis of a commercial
+software or hardware product without first obtaining permission of the
+authors. The authors make no representations about the suitability of
+this software for any purpose. It is provided "as is" without express
+or implied warranty.
+----------------------------------------------------------------------
+Please cite the following paper when you use it:
+
+Xianglong Zeng, Yuan Luo, Xiaojing Zhao, and Wenbin Ye, "An end-to-end 
+fully-convolutional neural network for division of focal plane sensors 
+to reconstruct S0, DoLP, and AoP," Opt. Express 27, 8566-8577 (2019)
+========================================================================
+"""
 import tensorflow as tf
 import numpy as np
 from utils.layers import conv2d, conv2d_bn
 import math
 
-def srcnn_ete(inputs, padding = 'VALID', name='SRCNN'):
+def ForkNet(inputs, padding = 'VALID', name='ForkNet'):
     '''
-    Built the PDCNN model.
+    Built the ForkNet model.
     Args:
-        inputs: down-sampled polarized images
+        inputs: mosaic polarized images
         padding: padding mode of convolution
     Returns:
-        X_hat: reconstructed polarized images
-        S_para: Stokes parameters
-        Grad: gradient images
+        s0: reconstructed s0 images
+        dolp: reconstructed dolp images
+        aop: reconstructed aop images
         
     '''
 #    keep_prob = tf.where(is_training, 0.2, 1.0)
@@ -49,7 +72,7 @@ def MAE_LOSS(s0_pred, s0_true, dolp_pred, dolp_true, aop_pred, aop_true):
 
 def smooth_loss(s0_pred, s0_true, dolp_pred, dolp_true, aop_pred, aop_true):
     '''
-    Define the mae loss function.
+    Define the smooth loss function.
     '''
     loss = 0.1*smooth_l1_loss(s0_true, s0_pred, 2) + smooth_l1_loss(dolp_true, dolp_pred, 2) + 0.01*smooth_l1_loss(aop_true, aop_pred, 2)
 
@@ -84,7 +107,7 @@ def LOSS(s0_pred, s0_true, dolp_pred, dolp_true, aop_pred, aop_true, max_value=m
 
 def MSE_LOSS(s0_pred, s0_true, dolp_pred, dolp_true, aop_pred, aop_true, max_value=math.pi/2.):
     '''
-    Define the loss function.
+    Define the mse loss function.
     '''
     L, C, S, sl = ssim_loss(aop_true, aop_pred, mv=max_value)
     loss = tf.reduce_mean(0.1*tf.square(s0_true - s0_pred) + tf.square(dolp_true - dolp_pred) + 0.032*tf.square(aop_true - aop_pred)) - 0.02*tf.log(C)
