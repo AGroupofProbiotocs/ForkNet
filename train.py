@@ -136,8 +136,8 @@ def train(patch_width = PATCH_WIDTH, patch_height = PATCH_HEIGHT, epoch_num = EP
     AoP = tf.placeholder(tf.float32, [None, None, None, 1], name='AoP')
 #    Para = tf.placeholder(tf.float32, [None, None, None, 3])#define tensors of input and label
     
-    # DoLP_hat= srcnn_ete(Y)
-    S0_hat, DoLP_hat, AoP_hat = srcnn_ete(Y, padding='SAME')
+    # DoLP_hat= ForkNet(Y)
+    S0_hat, DoLP_hat, AoP_hat = ForkNet(Y, padding='SAME')
     loss = LOSS(S0_hat, S0, DoLP_hat, DoLP, AoP_hat, AoP)
     tf.add_to_collection('S0_hat', S0_hat)
     tf.add_to_collection('DoLP_hat', DoLP_hat)
