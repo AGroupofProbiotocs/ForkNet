@@ -1,5 +1,5 @@
 # ForkNet
-An end-to-end network for the super-resolution of DoFP polarization imaging in Tensorflow.
+An end-to-end convolutional neural network for the DoFP sensor to reconstruct three common polarization properties, which is implemented with Tensorflow.
 
 ## Network Architecture
 ![ForkNet](https://github.com/AGroupofProbiotocs/ForkNet/blob/master/ForkNet.jpg)  
