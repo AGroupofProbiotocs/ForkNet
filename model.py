@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 ========================================================================
 ForkNet for DoFP sensor to reconstruct s0, dolp and aop, Version 1.0
