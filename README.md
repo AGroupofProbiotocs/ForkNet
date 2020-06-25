@@ -4,6 +4,9 @@ An end-to-end convolutional neural network for the DoFP sensor to reconstruct th
 ## Network Architecture
 ![ForkNet](https://github.com/AGroupofProbiotocs/ForkNet/blob/master/ForkNet.jpg)  
 
+## Note
+1. The input patches and labels can be generated bu running the "generate_labels" file in the "utils" folder. 
+
 ## Citation
 Please cite the following paper if you use the code:
 
