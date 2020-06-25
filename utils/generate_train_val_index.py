@@ -8,7 +8,7 @@ import numpy as np
 
 img_num = 110
 
-#随机打乱图片序号并划分训练及验证集
+#split the images into training set and validation set 
 # img_index = list(range(img_num))
 # np.random.shuffle(img_index)
 # img_index = str(img_index)[1:-1]
