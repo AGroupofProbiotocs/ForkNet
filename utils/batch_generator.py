@@ -42,12 +42,11 @@ def patch_batch_generator(Y, label, batch_size=64, patch_width=64, patch_height=
     else:
         index = np.arange(N)
     
-    #为batch计数
+    #count the batch index
     batch_index = 0
     while True:
-        #当前步数
         current_index = (batch_index * batch_size) % N
-        #判断是否到达最后一个batch，若是则修改该batch的size
+        #if reach the last batch，change the batch size to prevent not enough samples
         if N >= (current_index + batch_size):
             current_batch_size = batch_size
             batch_index += 1
@@ -62,7 +61,7 @@ def patch_batch_generator(Y, label, batch_size=64, patch_width=64, patch_height=
         
 
         for i in range(current_index, current_index + current_batch_size):
-            #将当前图像填装如batch
+            #fill the current images into the batch
             Y_batch[i - current_index] = Y[index[i]]
 #            X_batch[i - current_index] = X[index[i]]
             label_batch[i - current_index] = label[index[i]]
