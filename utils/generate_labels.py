@@ -45,8 +45,8 @@ m = np.arange(0, PATCH_SIZE-1, 2)
 n = np.arange(1, PATCH_SIZE, 2)
 i_0, j_0 = np.meshgrid(m, m, indexing='ij')
 i_45, j_45 = np.meshgrid(m, n, indexing='ij')
-i_90, j_90 = np.meshgrid(n, m, indexing='ij')
-i_135, j_135 = np.meshgrid(n ,n, indexing='ij')
+i_90, j_90 = np.meshgrid(n, n, indexing='ij')
+i_135, j_135 = np.meshgrid(n ,m, indexing='ij')
 ds_index = [(i_0, j_0),(i_45, j_45),(i_90, j_90),(i_135, j_135)]
 
 for l in range(1, IMG_NUM+1): 
