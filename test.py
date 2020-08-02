@@ -70,8 +70,8 @@ m_2 = np.arange(1, 960, 2)
 n_2 = np.arange(1, 1280, 2)
 i_0, j_0 = np.meshgrid(m_1, n_1, indexing='ij')
 i_45, j_45 = np.meshgrid(m_1, n_2, indexing='ij')
-i_90, j_90 = np.meshgrid(m_2, n_1, indexing='ij')
-i_135, j_135 = np.meshgrid(m_2, n_2, indexing='ij')
+i_90, j_90 = np.meshgrid(m_2, n_2, indexing='ij')
+i_135, j_135 = np.meshgrid(m_2, n_1, indexing='ij')
 ds_index = [(i_0, j_0), (i_45, j_45), (i_90, j_90), (i_135, j_135)]
 
 tf.reset_default_graph()
